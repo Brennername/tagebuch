@@ -5,8 +5,11 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
+  
+  /* I'm essentially using this one colour for the entire theme
+  because I used transparencies for the boxes*/
+  background-color: #355d99;
+/* background-color: #33333536; */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
