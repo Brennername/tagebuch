@@ -3,6 +3,10 @@
 This is an ArticleFeed where the articles are displayed with so many character teaser with an elipsis ending and you can click "Read More" to expand the whole article. 
 
 This is development code, so if you were not sent here to look at it then you probably don't need it.
+
+
+# Screenshot of the Vue component in IDX
+
 ![alt text](https://raw.githubusercontent.com/Brennername/tagebuch/refs/heads/main/src/assets/TageBuch.png)
 
 
