@@ -4,6 +4,9 @@ This is an ArticleFeed where the articles are displayed with so many character t
 
 This is development code, so if you were not sent here to look at it then you probably don't need it.
 ![alt text](https://raw.githubusercontent.com/Brennername/tagebuch/refs/heads/main/src/assets/TageBuch.png)
+
+
+
 ## The following was generated from the Vue IDX template
 
 # Vue 3 + TypeScript + Vite
