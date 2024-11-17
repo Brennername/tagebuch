@@ -1,5 +1,6 @@
 <template>
     <div class="article-feed-container">
+      <transition name="fade"><div v-if="isLoading" class="loading-mask"><div class="loading-pulse"><p>Loading...</p></div></div></transition>
     <div class="article-feed">
       <h2>Latest Articles</h2>
       <ul>
@@ -7,27 +8,28 @@
           <div @click="toggleArticle(article.id)" class="accordion-item">
             <h3 >{{ article.title }}</h3>
             <div class="pubdate">{{ article.pubDate }}</div>            
-            <div v-if="expandedArticles[article.id]">{{ article.content.substring(0, 20) }}...
+            <div v-if="expandedArticles[article.id]">{{ article.content.substring(0, 85) }}...
             <p></p><button class="readmore" href="#" @click.prevent="console.log(article.id)">Read More</button>  
             
             </div>
             
             <div class="accordion-content" :class="{ show: !expandedArticles[article.id] }">
-              <p  class="content-box" v-if="!expandedArticles[article.id]">
+              <div  class="content-box" v-if="!expandedArticles[article.id]">
                 {{ article.content }}
               
               
-                <p class="close-button-container"><button class="close" href="#" @click.prevent="console.log(article.id)">Close</button>    </p>
+                <div class="close-button-container"><button class="close" href="#" @click.prevent="console.log(article.id)">Close</button>    </div>
               
-              </p>
+              </div>
               
-              <p v-else>
-                {{ article.content.substring(0, 5) }}...
+              <div v-else>
+                <!-- Does this even show? -->
+                {{ article.content.substring(0, 20) }}...
                 
                 
               
               
-              </p>
+              </div>
             </div>
           </div>
         </li>
@@ -40,12 +42,13 @@
   export default {
     data() {
       return {
+        isLoading: true,
         articles: [
           {
             id: 1,
             title: 'Blog Entry 1',
             pubDate: '2024 Nov 15',
-            content: 'This is the content of Article 1. It is a long piece of text that will be truncated.'
+            content: 'Have you ever decided to write a blog? Me neither. I only wrote this so I would have a blog on my site.'
           },
           {
             id: 2,
@@ -65,11 +68,32 @@
       
     },
     created() {
-      this.articles.forEach(article => {
-    this.expandedArticles[article.id] = true; // Initialize to false (collapsed)
-    });
+      //this.fetchArticles();
+      this.loadMockedData(); 
     },
     methods: {
+      loadMockedData() {
+      this.articles.forEach(article => {
+          this.expandedArticles[article.id] = true; 
+        });
+        setTimeout(() => {
+        this.isLoading = false; 
+        }, 1000); 
+      },
+      async fetchArticles() {
+        try {
+          const response = await fetch('https://www.google.com/api/v1/blog/latest');
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          this.articles = await response.json();
+        } catch (error) {
+          console.error('Error fetching articles:', error);
+        } finally {
+          this.isLoading = false;
+        }
+      },
+ 
       toggleArticle(id) {
         console.log("toggleArticle(" + id + "): got here 1");
         console.log(this.expandedArticles[id]);
@@ -99,12 +123,60 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555; /* Adjust hover color as needed */
 }
+
+/* Fade transition for loading mask */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+/* Pulse animation for loading indicator */
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  50% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.7; }
+}
+
 .article-feed-container
 {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.295);
+  align-items: center;
+  padding: 3px;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(333, 333, 333, 0.295), rgba(777, 777, 777, 0.295) )
+
 }
+.loading-mask {
+  
+  
+  text-align: center;
+  display: flex;
+  height: 40px;
+  width: 100%;
+  background-color: rgba(87, 87, 87, 0.226); /* Adjust opacity as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100; /* Ensure it's on top */
+  border-radius: 10px;
+}
+.loading-pulse {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  border-radius: 10px;
+  background-color: rgba(36, 36, 36, 0.360); /* Adjust color and opacity as needed */
+  animation: pulse 440ms ease-in-out infinite; 
+}
+  
+
   .article-feed {
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.185), rgba(122, 122, 122, 0));
     border: 1px solid rgba(168, 168, 168, 0.411);
@@ -112,11 +184,11 @@
     padding: 20px;
     color: white;
     filter: invert(0);
-    width: 300px;
+    width: 400px;
     overflow: auto;
     scroll-behavior: smooth;
     scrollbar-width: thin;
-    height: 620px;
+    height: calc(100vh - 120px);
     
   }
   
@@ -129,7 +201,7 @@
   .article-feed li {
     background: rgba(255, 255, 255, 0.26);
     border-radius: 5px;
-    padding: 10px;
+    padding: 20px;
     margin-bottom: 10px;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
     cursor: pointer;
@@ -162,7 +234,7 @@
   }
   .content-box
   {
-    text-align: left;
+    text-align: justify;
    
   }
   .pubdate
