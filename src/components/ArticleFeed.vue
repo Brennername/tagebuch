@@ -1,8 +1,10 @@
 <template>
-    <div class="article-feed-container">
-      <transition name="fade"><div v-if="isLoading" class="loading-mask"><div class="loading-pulse"><p>Loading...</p></div></div></transition>
+     
+<div class="article-feed-container">
+  
     <div class="article-feed">
-      <h2>Latest Articles</h2>
+      <h2>Write Column</h2>
+      <transition name="fade"><div v-if="isLoading" class="loading-mask"><div class="loading-pulse"><p>Loading...</p></div></div></transition>
       <ul>
         <li v-for="article in articles" :key="article.id">
           <div @click="toggleArticle(article.id)" class="accordion-item">
@@ -24,7 +26,7 @@
               
               <div v-else>
                 <!-- Does this even show? -->
-                {{ article.content.substring(0, 20) }}...
+                {{ article.content }}...
                 
                 
               
@@ -38,72 +40,8 @@
   </div>
   </template>
   
-  <script>
-  export default {
-    data() {
-      return {
-        isLoading: true,
-        articles: [
-          {
-            id: 1,
-            title: 'Blog Entry 1',
-            pubDate: '2024 Nov 15',
-            content: 'Have you ever decided to write a blog? Me neither. I only wrote this so I would have a blog on my site.'
-          },
-          {
-            id: 2,
-            title: 'Article 2',
-            pubDate: '2024 Nov 15',
-            content: 'This is the content of Article 2. It is another long piece of text that will be truncated.'
-          },
-          {
-            id: 3,
-            title: 'Article 3',
-            pubDate: '2024 Nov 15',
-            content: 'This is the content of Article 3. It is yet another long piece of text that will be truncated.'
-          }
-        ],
-        expandedArticles: {}
-      };
-      
-    },
-    created() {
-      //this.fetchArticles();
-      this.loadMockedData(); 
-    },
-    methods: {
-      loadMockedData() {
-      this.articles.forEach(article => {
-          this.expandedArticles[article.id] = true; 
-        });
-        setTimeout(() => {
-        this.isLoading = false; 
-        }, 1000); 
-      },
-      async fetchArticles() {
-        try {
-          const response = await fetch('https://www.google.com/api/v1/blog/latest');
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          this.articles = await response.json();
-        } catch (error) {
-          console.error('Error fetching articles:', error);
-        } finally {
-          this.isLoading = false;
-        }
-      },
- 
-      toggleArticle(id) {
-        console.log("toggleArticle(" + id + "): got here 1");
-        console.log(this.expandedArticles[id]);
-        this.expandedArticles[id] = !this.expandedArticles[id];
-        console.log(this.expandedArticles[id]);
-      }
-    }
-  };
-  </script>
-  
+
+
   <style>
 /* General scrollbar styling */
 ::-webkit-scrollbar {
@@ -111,12 +49,12 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Adjust track color as needed */
+  background: #f1f1f17a; /* Adjust track color as needed */
   border-radius: 5px; /* Add rounded corners to the track */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888; /* Adjust thumb color as needed */
+  background: #afafaf60; /* Adjust thumb color as needed */
   border-radius: 5px; /* Add rounded corners to the thumb */
 }
 
@@ -134,28 +72,26 @@
 
 /* Pulse animation for loading indicator */
 @keyframes pulse {
-  0% { transform: scale(0.95); opacity: 0.7; }
+  0% { transform: scale(0.95); opacity: 0.3; }
   50% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(0.95); opacity: 0.7; }
+  100% { transform: scale(0.95); opacity: 0.5; }
 }
 
 .article-feed-container
 {
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.295);
+  box-shadow: 3px 3px 6px rgba(2, 2, 2, 0.5);
   align-items: center;
-  padding: 3px;
+  padding: 1px;
   justify-content: center;
   background: radial-gradient(circle, rgba(333, 333, 333, 0.295), rgba(777, 777, 777, 0.295) )
 
 }
 .loading-mask {
-  
-  
   text-align: center;
   display: flex;
-  height: 40px;
+  height: 30px;
   width: 100%;
   background-color: rgba(87, 87, 87, 0.226); /* Adjust opacity as needed */
   display: flex;
@@ -224,7 +160,7 @@
   
   .accordion-content {
     display: none;
-    margin-left: 20px;
+    margin: 20px;
     
   }
   
@@ -253,8 +189,9 @@
     background: repeating-radial-gradient(circle, #ffffff49, #b6b6b648, #85848400);
     border-radius: 5px;
     color: rgb(66, 66, 66);
-    border: 1px solid #ffffff55;
+    border: 2px solid #3f3f3f55;
     padding-top: 1px;
+    height: 25px;
     padding-bottom: 1px;
   }
   .close:hover
@@ -270,6 +207,7 @@
     font-size: 8pt;
     background: repeating-radial-gradient(circle, #ffffff36, #c7c6c623, #85848400);
     border-radius: 5px;
+    height: 25px;
   }
   .close-button-container
   {
@@ -278,3 +216,80 @@
     align-items: center;
   }
   </style>
+
+
+
+  <script>
+  export default {
+    data() {
+      return {
+        isLoading: true,
+        articles: [
+          {
+            id: 1,
+            title: 'Blog Entry 1',
+            pubDate: '2024 Nov 15',
+            content: 'Have you ever decided to write a blog? Me neither. I only wrote this so I would have a blog on my site.'
+            + ' So I decided to write this lorem ipsum dolor whatever I dunno the rest.'
+
+          },
+          {
+            id: 2,
+            title: 'Article 2',
+            pubDate: '2024 Nov 15',
+            content: 'This is the content of Article 2. It is another long piece of text that will be truncated.'
+          },
+          {
+            id: 3,
+            title: 'Article 3',
+            pubDate: '2024 Nov 15',
+            content: 'This is the content of Article 3. It is yet another long piece of text that will be truncated.'
+          }
+        ],
+        expandedArticles: {}
+      };
+      
+    },
+    created() {
+      //this.fetchArticles();
+      this.loadMockedData(); 
+    },
+    methods: {
+      loadMockedData() {
+      this.articles.forEach(article => {
+          this.expandedArticles[article.id] = true; 
+        });
+        setTimeout(() => {
+        this.isLoading = false; 
+        }, 1000); 
+      },
+      async fetchArticles() {
+        try {
+          const response = await fetch('https://www.google.com/api/v1/blog/latest');
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          this.articles = await response.json();
+        } catch (error) {
+          console.error('Error fetching articles:', error);
+        } finally {
+          this.isLoading = false;
+        }
+      },
+ 
+      toggleArticle(id) {
+        console.log("toggleArticle(" + id + "): got here 1");
+        console.log(this.expandedArticles[id]);
+        this.expandedArticles[id] = !this.expandedArticles[id];
+        console.log(this.expandedArticles[id]);
+      }
+    }
+  };
+  </script>
+  @media (max-width: 450px) {
+  .article-feed {
+    width: calc(100vw - 20px);
+    height: auto;
+  }
+}
+  
