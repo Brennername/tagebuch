@@ -7,7 +7,7 @@ This is development code, so if you were not sent here to look at it then you pr
 
 # Screenshot of the Vue component in IDX
 
-![alt text](https://raw.githubusercontent.com/Brennername/tagebuch/refs/heads/main/src/assets/TageBuch.png)
+![TageBuch on Github](https://raw.githubusercontent.com/Brennername/tagebuch/refs/heads/main/src/assets/TageBuch.png)
 
 
 
